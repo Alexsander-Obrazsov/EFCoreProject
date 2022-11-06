@@ -76,102 +76,221 @@ namespace EFCoreProject
                     switch (SelectTable.SelectedItem)
                     {
                         case "Client":
-                            Client client = new Client
+                            try
                             {
-                                FirstName = createTextBox[1].Text,
-                                Surname = createTextBox[2].Text,
-                                Patronymic = createTextBox[3].Text,
-                                Address = createTextBox[4].Text,
-                                PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
-                            };
-                            db.Clients.Add(client);
-                            db.SaveChanges();
+                                Client client = new Client
+                                {
+                                    FirstName = createTextBox[1].Text,
+                                    Surname = createTextBox[2].Text,
+                                    Patronymic = createTextBox[3].Text,
+                                    Address = createTextBox[4].Text,
+                                    PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
+                                };
+                                db.Clients.Add(client);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Delivery":
-                            Delivery delivery = new Delivery
+                            try
                             {
-                                DateDelivery = Convert.ToDateTime(createTextBox[1].Text),
-                                Remark = createTextBox[2].Text,
-                                SupplierId = Convert.ToInt32(createTextBox[3].Text)
-                            };
-                            db.Deliveries.Add(delivery);
-                            db.SaveChanges();
+                                Delivery delivery = new Delivery
+                                {
+                                    DateDelivery = Convert.ToDateTime(createTextBox[1].Text),
+                                    Remark = createTextBox[2].Text,
+                                    SupplierId = Convert.ToInt32(createTextBox[3].Text)
+                                };
+                                db.Deliveries.Add(delivery);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "DeliveryProduct":
-                            DeliveryProduct deliveryProduct = new DeliveryProduct
+                            try{
+                                DeliveryProduct deliveryProduct = new DeliveryProduct
+                                {
+                                    DeliveryId = Convert.ToInt32(createTextBox[1].Text),
+                                    ProductId = Convert.ToInt32(createTextBox[2].Text)
+                                };
+                                db.DeliveryProducts.Add(deliveryProduct);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                DeliveryId = Convert.ToInt32(createTextBox[1].Text),
-                                ProductId = Convert.ToInt32(createTextBox[2].Text)
-                            };
-                            db.DeliveryProducts.Add(deliveryProduct);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Order":
-                            Order order = new Order
-                            {
-                                DateOrder = Convert.ToDateTime(createTextBox[1].Text),
-                                Count = Convert.ToInt32(createTextBox[2].Text),
-                                PaymentType = createTextBox[3].Text,
-                                Remark = createTextBox[4].Text,
-                                ClientId = Convert.ToInt32(createTextBox[5].Text)
-                            };
+                            try{
+                                Order order = new Order
+                                {
+                                    DateOrder = Convert.ToDateTime(createTextBox[1].Text),
+                                    Count = Convert.ToInt32(createTextBox[2].Text),
+                                    PaymentType = createTextBox[3].Text,
+                                    Remark = createTextBox[4].Text,
+                                    ClientId = Convert.ToInt32(createTextBox[5].Text)
+                                };
                             db.Orders.Add(order);
                             db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Product":
-                            Product product = new Product
+                            try{
+                                Product product = new Product
+                                {
+                                    Name = createTextBox[1].Text,
+                                    Price = Convert.ToInt32(createTextBox[2].Text),
+                                    UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text),
+                                    Description = createTextBox[4].Text,
+                                    ProductGroupId = Convert.ToInt32(createTextBox[5].Text)
+                                };
+                                db.Products.Add(product);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                Name = createTextBox[1].Text,
-                                Price = Convert.ToInt32(createTextBox[2].Text),
-                                UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text),
-                                Description = createTextBox[4].Text,
-                                ProductGroupId = Convert.ToInt32(createTextBox[5].Text)
-                            };
-                            db.Products.Add(product);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductGroup":
-                            ProductGroup productGroup = new ProductGroup
+                            try{
+                                ProductGroup productGroup = new ProductGroup
+                                {
+                                    Name = createTextBox[1].Text
+                                };
+                                db.ProductGroups.Add(productGroup);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                Name = createTextBox[1].Text
-                            };
-                            db.ProductGroups.Add(productGroup);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductOrder":
-                            ProductOrder productOrder = new ProductOrder
+                            try{
+                                ProductOrder productOrder = new ProductOrder
+                                {
+                                    ProductId = Convert.ToInt32(createTextBox[1].Text),
+                                    OrderId = Convert.ToInt32(createTextBox[2].Text)
+                                };
+                                db.ProductOrders.Add(productOrder);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                ProductId = Convert.ToInt32(createTextBox[1].Text),
-                                OrderId = Convert.ToInt32(createTextBox[2].Text)
-                            };
-                            db.ProductOrders.Add(productOrder);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Supplier":
-                            Supplier supplier = new Supplier
+                            try{
+                                Supplier supplier = new Supplier
+                                {
+                                    Name = createTextBox[1].Text,
+                                    Address = createTextBox[4].Text,
+                                    PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
+                                };
+                                db.Suppliers.Add(supplier);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                Name = createTextBox[1].Text,
-                                Address = createTextBox[4].Text,
-                                PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
-                            };
-                            db.Suppliers.Add(supplier);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "UnitMeasurement":
-                            UnitMeasurement unitMeasurement = new UnitMeasurement
+                            try{
+                                UnitMeasurement unitMeasurement = new UnitMeasurement
+                                {
+                                    Name = createTextBox[1].Text
+                                };
+                                db.UnitMeasurements.Add(unitMeasurement);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
                             {
-                                Name = createTextBox[1].Text
-                            };
-                            db.UnitMeasurements.Add(unitMeasurement);
-                            db.SaveChanges();
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                     }
@@ -191,84 +310,210 @@ namespace EFCoreProject
                     switch (SelectTable.SelectedItem)
                     {
                         case "Client":
-                            Client client = (Client)DataBase.SelectedItem;
-                            client.FirstName = createTextBox[1].Text;
-                            client.Surname = createTextBox[2].Text;
-                            client.Patronymic = createTextBox[3].Text;
-                            client.Address = createTextBox[4].Text;
-                            client.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
-                            db.Clients.Update(client);
-                            db.SaveChanges();
+                            try
+                            {
+                                Client client = (Client)DataBase.SelectedItem;
+                                client.FirstName = createTextBox[1].Text;
+                                client.Surname = createTextBox[2].Text;
+                                client.Patronymic = createTextBox[3].Text;
+                                client.Address = createTextBox[4].Text;
+                                client.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
+                                db.Clients.Update(client);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Delivery":
-                            Delivery delivery = (Delivery)DataBase.SelectedItem;
-                            delivery.DateDelivery = Convert.ToDateTime(createTextBox[1].Text);
-                            delivery.Remark = createTextBox[2].Text;
-                            delivery.SupplierId = Convert.ToInt32(createTextBox[3].Text);
-                            db.Deliveries.Update(delivery);
-                            db.SaveChanges();
+                            try
+                            {
+                                Delivery delivery = (Delivery)DataBase.SelectedItem;
+                                delivery.DateDelivery = Convert.ToDateTime(createTextBox[1].Text);
+                                delivery.Remark = createTextBox[2].Text;
+                                delivery.SupplierId = Convert.ToInt32(createTextBox[3].Text);
+                                db.Deliveries.Update(delivery);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "DeliveryProduct":
-                            DeliveryProduct deliveryProduct = (DeliveryProduct)DataBase.SelectedItem;
-                            deliveryProduct.DeliveryId = Convert.ToInt32(createTextBox[1].Text);
-                            deliveryProduct.ProductId = Convert.ToInt32(createTextBox[2].Text);
-                            db.DeliveryProducts.Update(deliveryProduct);
-                            db.SaveChanges();
+                            try
+                            {
+                                DeliveryProduct deliveryProduct = (DeliveryProduct)DataBase.SelectedItem;
+                                deliveryProduct.DeliveryId = Convert.ToInt32(createTextBox[1].Text);
+                                deliveryProduct.ProductId = Convert.ToInt32(createTextBox[2].Text);
+                                db.DeliveryProducts.Update(deliveryProduct);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Order":
-                            Order order = (Order)DataBase.SelectedItem;
-                            order.DateOrder = Convert.ToDateTime(createTextBox[1].Text);
-                            order.Count = Convert.ToInt32(createTextBox[2].Text);
-                            order.PaymentType = createTextBox[3].Text;
-                            order.Remark = createTextBox[4].Text;
-                            order.ClientId = Convert.ToInt32(createTextBox[5].Text);
-                            db.Orders.Update(order);
-                            db.SaveChanges();
+                            try
+                            {
+                                Order order = (Order)DataBase.SelectedItem;
+                                order.DateOrder = Convert.ToDateTime(createTextBox[1].Text);
+                                order.Count = Convert.ToInt32(createTextBox[2].Text);
+                                order.PaymentType = createTextBox[3].Text;
+                                order.Remark = createTextBox[4].Text;
+                                order.ClientId = Convert.ToInt32(createTextBox[5].Text);
+                                db.Orders.Update(order);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Product":
-                            Product product = (Product)DataBase.SelectedItem;
-                            product.Name = createTextBox[1].Text;
-                            product.Price = Convert.ToInt32(createTextBox[2].Text);
-                            product.UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text);
-                            product.Description = createTextBox[4].Text;
-                            product.ProductGroupId = Convert.ToInt32(createTextBox[5].Text);
-                            db.Products.Update(product);
-                            db.SaveChanges();
+                            try
+                            {
+                                Product product = (Product)DataBase.SelectedItem;
+                                product.Name = createTextBox[1].Text;
+                                product.Price = Convert.ToInt32(createTextBox[2].Text);
+                                product.UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text);
+                                product.Description = createTextBox[4].Text;
+                                product.ProductGroupId = Convert.ToInt32(createTextBox[5].Text);
+                                db.Products.Update(product);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductGroup":
-                            ProductGroup productGroup = (ProductGroup)DataBase.SelectedItem;
-                            productGroup.Name = createTextBox[1].Text;
-                            db.ProductGroups.Update(productGroup);
-                            db.SaveChanges();
+                            try
+                            {
+                                ProductGroup productGroup = (ProductGroup)DataBase.SelectedItem;
+                                productGroup.Name = createTextBox[1].Text;
+                                db.ProductGroups.Update(productGroup);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductOrder":
-                            ProductOrder productOrder = (ProductOrder)DataBase.SelectedItem;
-                            productOrder.ProductId = Convert.ToInt32(createTextBox[1].Text);
-                            productOrder.OrderId = Convert.ToInt32(createTextBox[2].Text);
-                            db.ProductOrders.Update(productOrder);
-                            db.SaveChanges();
+                            try
+                            {
+                                ProductOrder productOrder = (ProductOrder)DataBase.SelectedItem;
+                                productOrder.ProductId = Convert.ToInt32(createTextBox[1].Text);
+                                productOrder.OrderId = Convert.ToInt32(createTextBox[2].Text);
+                                db.ProductOrders.Update(productOrder);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Supplier":
-                            Supplier supplier = (Supplier)DataBase.SelectedItem;
-                            supplier.Name = createTextBox[1].Text;
-                            supplier.Address = createTextBox[4].Text;
-                            supplier.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
-                            db.Suppliers.Update(supplier);
-                            db.SaveChanges();
+                            try
+                            {
+                                Supplier supplier = (Supplier)DataBase.SelectedItem;
+                                supplier.Name = createTextBox[1].Text;
+                                supplier.Address = createTextBox[4].Text;
+                                supplier.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
+                                db.Suppliers.Update(supplier);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "UnitMeasurement":
-                            UnitMeasurement unitMeasurement = (UnitMeasurement)DataBase.SelectedItem;
-                            unitMeasurement.Name = createTextBox[1].Text;
-                            db.UnitMeasurements.Update(unitMeasurement);
-                            db.SaveChanges();
+                            try
+                            {
+                                UnitMeasurement unitMeasurement = (UnitMeasurement)DataBase.SelectedItem;
+                                unitMeasurement.Name = createTextBox[1].Text;
+                                db.UnitMeasurements.Update(unitMeasurement);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                     }
@@ -388,48 +633,174 @@ namespace EFCoreProject
                     switch (SelectTable.SelectedItem)
                     {
                         case "Client":
-                            db.Clients.Remove((Client)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Clients.Remove((Client)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch(Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Delivery":
-                            db.Deliveries.Remove((Delivery)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Deliveries.Remove((Delivery)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "DeliveryProduct":
-                            db.DeliveryProducts.Remove((DeliveryProduct)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.DeliveryProducts.Remove((DeliveryProduct)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Order":
-                            db.Orders.Remove((Order)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Orders.Remove((Order)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Product":
-                            db.Products.Remove((Product)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Products.Remove((Product)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductGroup":
-                            db.ProductGroups.Remove((ProductGroup)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.ProductGroups.Remove((ProductGroup)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "ProductOrder":
-                            db.ProductOrders.Remove((ProductOrder)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.ProductOrders.Remove((ProductOrder)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "Supplier":
-                            db.Suppliers.Remove((Supplier)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Suppliers.Remove((Supplier)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                         case "UnitMeasurement":
-                            db.UnitMeasurements.Remove((UnitMeasurement)DataBase.SelectedItem);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.UnitMeasurements.Remove((UnitMeasurement)DataBase.SelectedItem);
+                                db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException is not null)
+                                {
+                                    MessageBox.Show(ex.InnerException!.Message);
+                                }
+                                else
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            }
                             LoadTable();
                             break;
                     }
@@ -598,6 +969,7 @@ namespace EFCoreProject
         {
             using (OnlineShopContext db = new OnlineShopContext())
             {
+                var collection = new ObservableCollection<object>();
                 switch (SelectTable.SelectedItem)
                 {
                     case "Client":
@@ -605,12 +977,15 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.Clients.Any())
                         {
-                            DataBase.ItemsSource = Client;
+                            foreach (var client in Client)
+                            {
+                                collection.Add(client);
+                            }
                         }
                         else
                         {
                             var columnsList = (from t in typeof(Client).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
+                            for (int i = 0; i < columnsList.Count-1; i++)
                             {
                                 DataBase.Columns.Add(new DataGridTextColumn()
                                 {
@@ -624,12 +999,17 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.Deliveries.Any())
                         {
+                            foreach (var delivery in Deliveries)
+                            {
+                                collection.Add(delivery);
+                            }
                             DataBase.ItemsSource = Deliveries;
+                            DataBase.Columns.RemoveAt(4);
                         }
                         else
                         {
                             var columnsList = (from t in typeof(Delivery).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
+                            for (int i = 0; i < columnsList.Count-1; i++)
                             {
                                 DataBase.Columns.Add(new DataGridTextColumn()
                                 {
@@ -643,7 +1023,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.DeliveryProducts.Any())
                         {
-                            DataBase.ItemsSource = DeliveryProducts;
+                            foreach (var deliveryProduct in DeliveryProducts)
+                            {
+                                collection.Add(deliveryProduct);
+                            }
                         }
                         else
                         {
@@ -662,7 +1045,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.Orders.Any())
                         {
-                            DataBase.ItemsSource = Order;
+                            foreach (var order in Order)
+                            {
+                                collection.Add(order);
+                            }
                         }
                         else
                         {
@@ -681,7 +1067,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.ProductGroups.Any())
                         {
-                            DataBase.ItemsSource = ProductGroup;
+                            foreach (var productGroup in ProductGroup)
+                            {
+                                collection.Add(productGroup);
+                            }
                         }
                         else
                         {
@@ -700,7 +1089,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.ProductOrders.Any())
                         {
-                            DataBase.ItemsSource = ProductOrder;
+                            foreach (var productOrder in ProductOrder)
+                            {
+                                collection.Add(productOrder);
+                            }
                         }
                         else
                         {
@@ -719,7 +1111,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.Products.Any())
                         {
-                            DataBase.ItemsSource = Product;
+                            foreach (var product in Product)
+                            {
+                                collection.Add(product);
+                            }
                         }
                         else
                         {
@@ -738,7 +1133,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.Suppliers.Any())
                         {
-                            DataBase.ItemsSource = Supplier;
+                            foreach (var supplier in Supplier)
+                            {
+                                collection.Add(supplier);
+                            }
                         }
                         else
                         {
@@ -757,7 +1155,10 @@ namespace EFCoreProject
                         DataBase.Columns.Clear();
                         if (db.UnitMeasurements.Any())
                         {
-                            DataBase.ItemsSource = UnitMeasurement;
+                            foreach (var unitMeasurement in UnitMeasurement)
+                            {
+                                collection.Add(unitMeasurement);
+                            }
                         }
                         else
                         {
@@ -772,6 +1173,7 @@ namespace EFCoreProject
                         }
                         break;
                 }
+                DataBase.ItemsSource = collection;
             }
 
         }
