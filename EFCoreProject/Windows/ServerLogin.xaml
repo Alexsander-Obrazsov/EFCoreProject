@@ -1,0 +1,26 @@
+﻿<Window x:Class="EFCoreProject.Windows.ServerLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EFCoreProject.Windows"
+        mc:Ignorable="d"
+        Title="ServerLogin" Height="200" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF363636" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Server name" Height="30" Foreground="White"/>
+            <TextBox Grid.Column="1" Name="ServerName" VerticalContentAlignment="Center" Height="30"/>
+        </Grid>
+        <Button Grid.Row="1" Name="ConnectServer" Content="Connect to the server" Height="50" Width="200" Click="ConnectServer_Click"/>
+        <Button Grid.Row="2" Name="Exit" Content="Exit" Height="30" Width="100" Click="Exit_Click"/>
+    </Grid>
+</Window>
