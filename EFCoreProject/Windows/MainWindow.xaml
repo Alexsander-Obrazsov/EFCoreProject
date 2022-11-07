@@ -50,7 +50,7 @@
                 <Button x:Name="DeleteLineButton" Content="Delete line" Grid.Column="1" Grid.Row="2" Click="DeleteLineButton_Click"/>
                 <Button Grid.Row="3" Name="ClearTable" Content="Clear table" Width="100" Height="20" Margin="5" Click="ClearTable_Click"/>
             </Grid>
-            <Button Grid.Row="3" Name="Back" Content="Back" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" Width="140" Margin="15,15,15,15" Click="Back_Click"/>
+            <Button Grid.Row="2" Width="100" Height="30" Content="Exit" Name="Exit" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5" Click="Exit_Click"/>
         </Grid>
     </Grid>
 </Window>

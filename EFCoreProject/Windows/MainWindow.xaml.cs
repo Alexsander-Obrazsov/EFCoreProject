@@ -9,9 +9,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using EFCoreProject.Entities;
-using EFCoreProject.Windows;
 using System.Globalization;
 using System.Net;
+using AutoMapper;
+using EFCoreProject.DTO;
 
 namespace EFCoreProject
 {
@@ -47,13 +48,6 @@ namespace EFCoreProject
             LoadTable();
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            ServerLogin sl = new ServerLogin();
-            sl.Show();
-            this.Close();
-        }
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Row.Visibility = Visibility.Hidden;
@@ -78,16 +72,13 @@ namespace EFCoreProject
                         case "Client":
                             try
                             {
-                                Client client = new Client
-                                {
-                                    FirstName = createTextBox[1].Text,
-                                    Surname = createTextBox[2].Text,
-                                    Patronymic = createTextBox[3].Text,
-                                    Address = createTextBox[4].Text,
-                                    PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
-                                };
-                                db.Clients.Add(client);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO Client (FirstName, Surname, Patronymic, Address, PhoneNumber) VALUES (" +
+                                    $"'{createTextBox[1].Text}', " +
+                                    $"'{createTextBox[2].Text}', " +
+                                    $"'{createTextBox[3].Text}', " +
+                                    $"'{createTextBox[4].Text}', " +
+                                    $"{createTextBox[5].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -105,14 +96,11 @@ namespace EFCoreProject
                         case "Delivery":
                             try
                             {
-                                Delivery delivery = new Delivery
-                                {
-                                    DateDelivery = Convert.ToDateTime(createTextBox[1].Text),
-                                    Remark = createTextBox[2].Text,
-                                    SupplierId = Convert.ToInt32(createTextBox[3].Text)
-                                };
-                                db.Deliveries.Add(delivery);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO Delivery (DateDelivery, Remark, SupplierId) VALUES (" +
+                                    $"{createTextBox[1].Text}, " +
+                                    $"'{createTextBox[2].Text}', " +
+                                    $"{createTextBox[3].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -128,14 +116,12 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "DeliveryProduct":
-                            try{
-                                DeliveryProduct deliveryProduct = new DeliveryProduct
-                                {
-                                    DeliveryId = Convert.ToInt32(createTextBox[1].Text),
-                                    ProductId = Convert.ToInt32(createTextBox[2].Text)
-                                };
-                                db.DeliveryProducts.Add(deliveryProduct);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO DeliveryProduct (DeliveryId, ProductId) VALUES (" +
+                                    $"{createTextBox[1].Text}, " +
+                                    $"{createTextBox[2].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -151,17 +137,15 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "Order":
-                            try{
-                                Order order = new Order
-                                {
-                                    DateOrder = Convert.ToDateTime(createTextBox[1].Text),
-                                    Count = Convert.ToInt32(createTextBox[2].Text),
-                                    PaymentType = createTextBox[3].Text,
-                                    Remark = createTextBox[4].Text,
-                                    ClientId = Convert.ToInt32(createTextBox[5].Text)
-                                };
-                            db.Orders.Add(order);
-                            db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO Order (DateOrder, Count, PaymentType, Remark, ClientId) VALUES (" +
+                                    $"{createTextBox[1].Text}, " +
+                                    $"{createTextBox[2].Text}, " +
+                                    $"'{createTextBox[3].Text}', " +
+                                    $"'{createTextBox[4].Text}', " +
+                                    $"{createTextBox[5].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -177,17 +161,15 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "Product":
-                            try{
-                                Product product = new Product
-                                {
-                                    Name = createTextBox[1].Text,
-                                    Price = Convert.ToInt32(createTextBox[2].Text),
-                                    UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text),
-                                    Description = createTextBox[4].Text,
-                                    ProductGroupId = Convert.ToInt32(createTextBox[5].Text)
-                                };
-                                db.Products.Add(product);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO Product (Name, Price, UnitMeasurementId, Description, ProductGroupId) VALUES (" +
+                                    $"'{createTextBox[1].Text}', " +
+                                    $"{createTextBox[2].Text}, " +
+                                    $"{createTextBox[3].Text}, " +
+                                    $"'{createTextBox[4].Text}', " +
+                                    $"{createTextBox[5].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -203,13 +185,11 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "ProductGroup":
-                            try{
-                                ProductGroup productGroup = new ProductGroup
-                                {
-                                    Name = createTextBox[1].Text
-                                };
-                                db.ProductGroups.Add(productGroup);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO ProductGroup (Name) VALUES (" +
+                                    $"'{createTextBox[1].Text}')");
                             }
                             catch (Exception ex)
                             {
@@ -225,14 +205,12 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "ProductOrder":
-                            try{
-                                ProductOrder productOrder = new ProductOrder
-                                {
-                                    ProductId = Convert.ToInt32(createTextBox[1].Text),
-                                    OrderId = Convert.ToInt32(createTextBox[2].Text)
-                                };
-                                db.ProductOrders.Add(productOrder);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO ProductOrder (ProductId, OrderId) VALUES (" +
+                                    $"{createTextBox[1].Text}, " +
+                                    $"{createTextBox[2].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -248,15 +226,13 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "Supplier":
-                            try{
-                                Supplier supplier = new Supplier
-                                {
-                                    Name = createTextBox[1].Text,
-                                    Address = createTextBox[4].Text,
-                                    PhoneNumber = Convert.ToDecimal(createTextBox[5].Text)
-                                };
-                                db.Suppliers.Add(supplier);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO Supplier (Name, Address, PhoneNumber) VALUES (" +
+                                    $"'{createTextBox[1].Text}', " +
+                                    $"'{createTextBox[2].Text}', " +
+                                    $"{createTextBox[3].Text})");
                             }
                             catch (Exception ex)
                             {
@@ -272,13 +248,11 @@ namespace EFCoreProject
                             LoadTable();
                             break;
                         case "UnitMeasurement":
-                            try{
-                                UnitMeasurement unitMeasurement = new UnitMeasurement
-                                {
-                                    Name = createTextBox[1].Text
-                                };
-                                db.UnitMeasurements.Add(unitMeasurement);
-                                db.SaveChanges();
+                            try
+                            {
+                                db.Database.ExecuteSqlRaw(
+                                    $"INSERT INTO UnitMeasurement (Name) VALUES (" +
+                                    $"'{createTextBox[1].Text}')");
                             }
                             catch (Exception ex)
                             {
@@ -312,14 +286,13 @@ namespace EFCoreProject
                         case "Client":
                             try
                             {
-                                Client client = (Client)DataBase.SelectedItem;
-                                client.FirstName = createTextBox[1].Text;
-                                client.Surname = createTextBox[2].Text;
-                                client.Patronymic = createTextBox[3].Text;
-                                client.Address = createTextBox[4].Text;
-                                client.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
-                                db.Clients.Update(client);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE Client SET FirstName = '{createTextBox[1].Text}'," +
+                                    $" Surname = '{createTextBox[2].Text}'," +
+                                    $" Patronymic = '{createTextBox[3].Text}'," +
+                                    $" Address = '{createTextBox[4].Text}'," +
+                                    $" PhoneNumber = {createTextBox[5].Text}" +
+                                    $" WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -337,12 +310,13 @@ namespace EFCoreProject
                         case "Delivery":
                             try
                             {
-                                Delivery delivery = (Delivery)DataBase.SelectedItem;
-                                delivery.DateDelivery = Convert.ToDateTime(createTextBox[1].Text);
-                                delivery.Remark = createTextBox[2].Text;
-                                delivery.SupplierId = Convert.ToInt32(createTextBox[3].Text);
-                                db.Deliveries.Update(delivery);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE Delivery SET" +
+                                    $" DateDelivery = {createTextBox[1].Text}," +
+                                    $" Remark = '{createTextBox[2].Text}'," +
+                                    $" Address = '{createTextBox[3].Text}'," +
+                                    $" SupplierId = {createTextBox[4].Text}" +
+                                    $" WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -360,11 +334,11 @@ namespace EFCoreProject
                         case "DeliveryProduct":
                             try
                             {
-                                DeliveryProduct deliveryProduct = (DeliveryProduct)DataBase.SelectedItem;
-                                deliveryProduct.DeliveryId = Convert.ToInt32(createTextBox[1].Text);
-                                deliveryProduct.ProductId = Convert.ToInt32(createTextBox[2].Text);
-                                db.DeliveryProducts.Update(deliveryProduct);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" DeliveryId = {createTextBox[1].Text}," +
+                                    $" ProductId = {createTextBox[2].Text}," +
+                                    $" WHERE DeliveryId = {((DTO.DeliveryProduct)DataBase.SelectedItem).DeliveryId}");
                             }
                             catch (Exception ex)
                             {
@@ -382,14 +356,14 @@ namespace EFCoreProject
                         case "Order":
                             try
                             {
-                                Order order = (Order)DataBase.SelectedItem;
-                                order.DateOrder = Convert.ToDateTime(createTextBox[1].Text);
-                                order.Count = Convert.ToInt32(createTextBox[2].Text);
-                                order.PaymentType = createTextBox[3].Text;
-                                order.Remark = createTextBox[4].Text;
-                                order.ClientId = Convert.ToInt32(createTextBox[5].Text);
-                                db.Orders.Update(order);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" DateOrder = {createTextBox[1].Text}," +
+                                    $" Count = {createTextBox[2].Text}," +
+                                    $" PaymentType = '{createTextBox[3].Text}'," +
+                                    $" Remark = '{createTextBox[4].Text}'," +
+                                    $" ClientId = {createTextBox[5].Text}," +
+                                    $" WHERE DeliveryId = {((DTO.Order)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -407,14 +381,14 @@ namespace EFCoreProject
                         case "Product":
                             try
                             {
-                                Product product = (Product)DataBase.SelectedItem;
-                                product.Name = createTextBox[1].Text;
-                                product.Price = Convert.ToInt32(createTextBox[2].Text);
-                                product.UnitMeasurementId = Convert.ToInt32(createTextBox[3].Text);
-                                product.Description = createTextBox[4].Text;
-                                product.ProductGroupId = Convert.ToInt32(createTextBox[5].Text);
-                                db.Products.Update(product);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" Name = '{createTextBox[1].Text}'," +
+                                    $" Price = {createTextBox[2].Text}," +
+                                    $" UnitMeasurementId = '{createTextBox[3].Text}'," +
+                                    $" Description = '{createTextBox[4].Text}'," +
+                                    $" ProductGroupId = {createTextBox[5].Text}," +
+                                    $" WHERE DeliveryId = {((DTO.Product)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -432,10 +406,10 @@ namespace EFCoreProject
                         case "ProductGroup":
                             try
                             {
-                                ProductGroup productGroup = (ProductGroup)DataBase.SelectedItem;
-                                productGroup.Name = createTextBox[1].Text;
-                                db.ProductGroups.Update(productGroup);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" Name = '{createTextBox[1].Text}'," +
+                                    $" WHERE DeliveryId = {((DTO.ProductGroup)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -453,11 +427,11 @@ namespace EFCoreProject
                         case "ProductOrder":
                             try
                             {
-                                ProductOrder productOrder = (ProductOrder)DataBase.SelectedItem;
-                                productOrder.ProductId = Convert.ToInt32(createTextBox[1].Text);
-                                productOrder.OrderId = Convert.ToInt32(createTextBox[2].Text);
-                                db.ProductOrders.Update(productOrder);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" Name = '{createTextBox[1].Text}'," +
+                                    $" OrderId = {createTextBox[2].Text}," +
+                                    $" WHERE DeliveryId = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId}");
                             }
                             catch (Exception ex)
                             {
@@ -475,12 +449,12 @@ namespace EFCoreProject
                         case "Supplier":
                             try
                             {
-                                Supplier supplier = (Supplier)DataBase.SelectedItem;
-                                supplier.Name = createTextBox[1].Text;
-                                supplier.Address = createTextBox[4].Text;
-                                supplier.PhoneNumber = Convert.ToDecimal(createTextBox[5].Text);
-                                db.Suppliers.Update(supplier);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" Name = '{createTextBox[1].Text}'," +
+                                    $" Address = '{createTextBox[2].Text}'," +
+                                    $" PhoneNumber = {createTextBox[3].Text}," +
+                                    $" WHERE DeliveryId = {((DTO.Supplier)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -498,10 +472,10 @@ namespace EFCoreProject
                         case "UnitMeasurement":
                             try
                             {
-                                UnitMeasurement unitMeasurement = (UnitMeasurement)DataBase.SelectedItem;
-                                unitMeasurement.Name = createTextBox[1].Text;
-                                db.UnitMeasurements.Update(unitMeasurement);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw(
+                                    $"UPDATE DeliveryProduct SET" +
+                                    $" Name = '{createTextBox[1].Text}'," +
+                                    $" WHERE DeliveryId = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -554,59 +528,56 @@ namespace EFCoreProject
                                 switch (SelectTable.SelectedItem)
                                 {
                                     case "Client":
-                                        createTextBox[0].Text = Convert.ToString(((Client)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((Client)DataBase.SelectedItem).FirstName);
-                                        createTextBox[2].Text = Convert.ToString(((Client)DataBase.SelectedItem).Surname);
-                                        createTextBox[3].Text = Convert.ToString(((Client)DataBase.SelectedItem).Patronymic);
-                                        createTextBox[4].Text = Convert.ToString(((Client)DataBase.SelectedItem).Address);
-                                        createTextBox[5].Text = Convert.ToString(((Client)DataBase.SelectedItem).PhoneNumber);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).FirstName);
+                                        createTextBox[2].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).Surname);
+                                        createTextBox[3].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).Patronymic);
+                                        createTextBox[4].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).Address);
+                                        createTextBox[5].Text = Convert.ToString(((DTO.Client)DataBase.SelectedItem).PhoneNumber);
                                         break;
                                     case "Delivery":
-                                        createTextBox[0].Text = Convert.ToString(((Delivery)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((Delivery)DataBase.SelectedItem).DateDelivery);
-                                        createTextBox[2].Text = Convert.ToString(((Delivery)DataBase.SelectedItem).Remark);
-                                        createTextBox[3].Text = Convert.ToString(((Delivery)DataBase.SelectedItem).SupplierId);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).DateDelivery);
+                                        createTextBox[2].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).Remark);
+                                        createTextBox[3].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).SupplierId);
                                         break;
                                     case "DeliveryProduct":
-                                        createTextBox[0].Text = Convert.ToString(((DeliveryProduct)DataBase.SelectedItem).DeliveryId);
-                                        createTextBox[1].Text = Convert.ToString(((DeliveryProduct)DataBase.SelectedItem).ProductId);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.DeliveryProduct)DataBase.SelectedItem).DeliveryId);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.DeliveryProduct)DataBase.SelectedItem).ProductId);
                                         break;
                                     case "Order":
-                                        createTextBox[0].Text = Convert.ToString(((Order)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((Order)DataBase.SelectedItem).DateOrder);
-                                        createTextBox[2].Text = Convert.ToString(((Order)DataBase.SelectedItem).Count);
-                                        createTextBox[3].Text = Convert.ToString(((Order)DataBase.SelectedItem).PaymentType);
-                                        createTextBox[4].Text = Convert.ToString(((Order)DataBase.SelectedItem).Remark);
-                                        createTextBox[5].Text = Convert.ToString(((Order)DataBase.SelectedItem).ClientId);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).DateOrder);
+                                        createTextBox[2].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).Count);
+                                        createTextBox[3].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).PaymentType);
+                                        createTextBox[4].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).Remark);
+                                        createTextBox[5].Text = Convert.ToString(((DTO.Order)DataBase.SelectedItem).ClientId);
                                         break;
                                     case "Product":
-                                        createTextBox[0].Text = Convert.ToString(((Product)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((Product)DataBase.SelectedItem).Name);
-                                        createTextBox[2].Text = Convert.ToString(((Product)DataBase.SelectedItem).Price);
-                                        createTextBox[3].Text = Convert.ToString(((Product)DataBase.SelectedItem).UnitMeasurementId);
-                                        createTextBox[4].Text = Convert.ToString(((Product)DataBase.SelectedItem).Description);
-                                        createTextBox[5].Text = Convert.ToString(((Product)DataBase.SelectedItem).ProductGroupId);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).Name);
+                                        createTextBox[2].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).Price);
+                                        createTextBox[3].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).UnitMeasurementId);
+                                        createTextBox[4].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).Description);
+                                        createTextBox[5].Text = Convert.ToString(((DTO.Product)DataBase.SelectedItem).ProductGroupId);
                                         break;
                                     case "ProductGroup":
-                                        createTextBox[0].Text = Convert.ToString(((ProductGroup)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((ProductGroup)DataBase.SelectedItem).Name);
-                                        createTextBox[2].Text = Convert.ToString(((ProductGroup)DataBase.SelectedItem).Products);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.ProductGroup)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.ProductGroup)DataBase.SelectedItem).Name);
                                         break;
                                     case "ProductOrder":
-                                        createTextBox[0].Text = Convert.ToString(((ProductOrder)DataBase.SelectedItem).ProductId);
-                                        createTextBox[1].Text = Convert.ToString(((ProductOrder)DataBase.SelectedItem).OrderId);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.ProductOrder)DataBase.SelectedItem).ProductId);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.ProductOrder)DataBase.SelectedItem).OrderId);
                                         break;
                                     case "Supplier":
-                                        createTextBox[0].Text = Convert.ToString(((Supplier)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((Supplier)DataBase.SelectedItem).Name);
-                                        createTextBox[2].Text = Convert.ToString(((Supplier)DataBase.SelectedItem).Address);
-                                        createTextBox[3].Text = Convert.ToString(((Supplier)DataBase.SelectedItem).PhoneNumber);
-                                        createTextBox[4].Text = Convert.ToString(((Supplier)DataBase.SelectedItem).Deliveries);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.Supplier)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.Supplier)DataBase.SelectedItem).Name);
+                                        createTextBox[2].Text = Convert.ToString(((DTO.Supplier)DataBase.SelectedItem).Address);
+                                        createTextBox[3].Text = Convert.ToString(((DTO.Supplier)DataBase.SelectedItem).PhoneNumber);
                                         break;
                                     case "UnitMeasurement":
-                                        createTextBox[0].Text = Convert.ToString(((UnitMeasurement)DataBase.SelectedItem).Id);
-                                        createTextBox[1].Text = Convert.ToString(((UnitMeasurement)DataBase.SelectedItem).Name);
-                                        createTextBox[2].Text = Convert.ToString(((UnitMeasurement)DataBase.SelectedItem).Products);
+                                        createTextBox[0].Text = Convert.ToString(((DTO.UnitMeasurement)DataBase.SelectedItem).Id);
+                                        createTextBox[1].Text = Convert.ToString(((DTO.UnitMeasurement)DataBase.SelectedItem).Name);
                                         break;
                                 }
                             }
@@ -635,8 +606,7 @@ namespace EFCoreProject
                         case "Client":
                             try
                             {
-                                db.Clients.Remove((Client)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM Client WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id}");
                             }
                             catch(Exception ex)
                             {
@@ -654,8 +624,7 @@ namespace EFCoreProject
                         case "Delivery":
                             try
                             {
-                                db.Deliveries.Remove((Delivery)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM Delivery WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -673,8 +642,7 @@ namespace EFCoreProject
                         case "DeliveryProduct":
                             try
                             {
-                                db.DeliveryProducts.Remove((DeliveryProduct)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM DeliveryProduct WHERE ProductId = {((DTO.DeliveryProduct)DataBase.SelectedItem).ProductId}");
                             }
                             catch (Exception ex)
                             {
@@ -692,8 +660,7 @@ namespace EFCoreProject
                         case "Order":
                             try
                             {
-                                db.Orders.Remove((Order)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM Order WHERE ID = {((DTO.Order)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -711,8 +678,7 @@ namespace EFCoreProject
                         case "Product":
                             try
                             {
-                                db.Products.Remove((Product)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM Product WHERE ID = {((DTO.Product)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -730,8 +696,7 @@ namespace EFCoreProject
                         case "ProductGroup":
                             try
                             {
-                                db.ProductGroups.Remove((ProductGroup)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM ProductGroup WHERE ID = {((DTO.ProductGroup)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -749,8 +714,7 @@ namespace EFCoreProject
                         case "ProductOrder":
                             try
                             {
-                                db.ProductOrders.Remove((ProductOrder)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM ProductOrder WHERE ProductId = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId}");
                             }
                             catch (Exception ex)
                             {
@@ -768,8 +732,7 @@ namespace EFCoreProject
                         case "Supplier":
                             try
                             {
-                                db.Suppliers.Remove((Supplier)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM Supplier WHERE ID = {((DTO.Supplier)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -787,8 +750,7 @@ namespace EFCoreProject
                         case "UnitMeasurement":
                             try
                             {
-                                db.UnitMeasurements.Remove((UnitMeasurement)DataBase.SelectedItem);
-                                db.SaveChanges();
+                                db.Database.ExecuteSqlRaw($"DELETE FROM UnitMeasurement WHERE ID = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id}");
                             }
                             catch (Exception ex)
                             {
@@ -821,8 +783,23 @@ namespace EFCoreProject
                 {
                     using (OnlineShopContext db = new OnlineShopContext())
                     {
-                        int clearTable = db.Database.ExecuteSqlRaw($"DELETE FROM {SelectTable.SelectedItem}");
-                        int resetId = db.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('{SelectTable.SelectedItem}', RESEED, 0)");
+                        try
+                        {
+                            int clearTable = db.Database.ExecuteSqlRaw($"DELETE FROM {SelectTable.SelectedItem}");
+                            int resetId = db.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('{SelectTable.SelectedItem}', RESEED, 0)");
+
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.InnerException is not null)
+                            {
+                                MessageBox.Show(ex.InnerException!.Message);
+                            }
+                            else
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+                        }
                         LoadTable();
                     }
                 }
@@ -952,7 +929,7 @@ namespace EFCoreProject
                 EditLineButton.IsEnabled = false;
                 DeleteLineButton.IsEnabled = false;
                 ClearTable.IsEnabled = false;
-                Back.IsEnabled = false;
+                Exit.IsEnabled = false;
             }
             else if (enable == false)
             {
@@ -961,7 +938,7 @@ namespace EFCoreProject
                 EditLineButton.IsEnabled = true;
                 DeleteLineButton.IsEnabled = true;
                 ClearTable.IsEnabled = true;
-                Back.IsEnabled = true;
+                Exit.IsEnabled = true;
             }
         }
 
@@ -973,209 +950,67 @@ namespace EFCoreProject
                 switch (SelectTable.SelectedItem)
                 {
                     case "Client":
-                        var Client = (from client in db.Clients select client).ToList();
-                        DataBase.Columns.Clear();
-                        if (db.Clients.Any())
-                        {
-                            foreach (var client in Client)
-                            {
-                                collection.Add(client);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(Client).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count-1; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configClient = new MapperConfiguration(cfg => cfg.CreateMap<Entities.Client, DTO.Client>());
+                        var mapperClient = new Mapper(configClient);
+                        var clientDTO = mapperClient.Map<List<DTO.Client>>(db.Clients.ToList());
+                        DataBase.ItemsSource = clientDTO;
                         break;
                     case "Delivery":
-                        var Deliveries = db.Deliveries.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.Deliveries.Any())
-                        {
-                            foreach (var delivery in Deliveries)
-                            {
-                                collection.Add(delivery);
-                            }
-                            DataBase.ItemsSource = Deliveries;
-                            DataBase.Columns.RemoveAt(4);
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(Delivery).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count-1; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configDelivery = new MapperConfiguration(cfg => cfg.CreateMap<Entities.Delivery, DTO.Delivery>());
+                        var mapperDelivery = new Mapper(configDelivery);
+                        var deliveryDTO = mapperDelivery.Map<List<DTO.Delivery>>(db.Deliveries.ToList());
+                        DataBase.ItemsSource = deliveryDTO;
                         break;
                     case "Delivery_Product":
-                        var DeliveryProducts = db.DeliveryProducts.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.DeliveryProducts.Any())
-                        {
-                            foreach (var deliveryProduct in DeliveryProducts)
-                            {
-                                collection.Add(deliveryProduct);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(DeliveryProduct).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configDeliveryProduce = new MapperConfiguration(cfg => cfg.CreateMap<Entities.DeliveryProduct, DTO.DeliveryProduct>());
+                        var mapperDeliveryProduce = new Mapper(configDeliveryProduce);
+                        var deliveryProductDTO = mapperDeliveryProduce.Map<List<DTO.DeliveryProduct>>(db.DeliveryProducts.ToList());
+                        DataBase.ItemsSource = deliveryProductDTO;
                         break;
                     case "Order":
-                        var Order = db.Orders.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.Orders.Any())
-                        {
-                            foreach (var order in Order)
-                            {
-                                collection.Add(order);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(Order).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configOrder = new MapperConfiguration(cfg => cfg.CreateMap<Entities.Order, DTO.Order>());
+                        var mapperOrder = new Mapper(configOrder);
+                        var orderDTO = mapperOrder.Map<List<DTO.Order>>(db.Orders.ToList());
+                        DataBase.ItemsSource = orderDTO;
                         break;
                     case "ProductGroup":
-                        var ProductGroup = db.ProductGroups.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.ProductGroups.Any())
-                        {
-                            foreach (var productGroup in ProductGroup)
-                            {
-                                collection.Add(productGroup);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(ProductGroup).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configProductGroup = new MapperConfiguration(cfg => cfg.CreateMap<Entities.ProductGroup, DTO.ProductGroup>());
+                        var mapperProductGroup = new Mapper(configProductGroup);
+                        var productGroupDTO = mapperProductGroup.Map<List<DTO.ProductGroup>>(db.ProductGroups.ToList());
+                        DataBase.ItemsSource = productGroupDTO;
                         break;
                     case "Product_Order":
-                        var ProductOrder = db.ProductOrders.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.ProductOrders.Any())
-                        {
-                            foreach (var productOrder in ProductOrder)
-                            {
-                                collection.Add(productOrder);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(ProductOrder).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configProductOrder = new MapperConfiguration(cfg => cfg.CreateMap<Entities.ProductOrder, DTO.ProductOrder>());
+                        var mapperProductOrder = new Mapper(configProductOrder);
+                        var productOrderDTO = mapperProductOrder.Map<List<DTO.ProductOrder>>(db.ProductOrders.ToList());
+                        DataBase.ItemsSource = productOrderDTO;
                         break;
                     case "Product":
-                        var Product = db.Products.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.Products.Any())
-                        {
-                            foreach (var product in Product)
-                            {
-                                collection.Add(product);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(Product).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configProduct = new MapperConfiguration(cfg => cfg.CreateMap<Entities.Product, DTO.Product>());
+                        var mapperProduct = new Mapper(configProduct);
+                        var productDTO = mapperProduct.Map<List<DTO.Product>>(db.Products.ToList());
+                        DataBase.ItemsSource = productDTO;
                         break;
                     case "Supplier":
-                        var Supplier = db.Suppliers.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.Suppliers.Any())
-                        {
-                            foreach (var supplier in Supplier)
-                            {
-                                collection.Add(supplier);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(Supplier).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configSupplier = new MapperConfiguration(cfg => cfg.CreateMap<Entities.Supplier, DTO.Supplier>());
+                        var mapperSupplier = new Mapper(configSupplier);
+                        var supplierDTO = mapperSupplier.Map<List<DTO.Supplier>>(db.Suppliers.ToList());
+                        DataBase.ItemsSource = supplierDTO;
                         break;
                     case "UnitMeasurement":
-                        var UnitMeasurement = db.UnitMeasurements.ToList();
-                        DataBase.Columns.Clear();
-                        if (db.UnitMeasurements.Any())
-                        {
-                            foreach (var unitMeasurement in UnitMeasurement)
-                            {
-                                collection.Add(unitMeasurement);
-                            }
-                        }
-                        else
-                        {
-                            var columnsList = (from t in typeof(UnitMeasurement).GetProperties() select t.Name).ToList();
-                            for (int i = 0; i < columnsList.Count; i++)
-                            {
-                                DataBase.Columns.Add(new DataGridTextColumn()
-                                {
-                                    Header = columnsList[i]
-                                });
-                            }
-                        }
+                        var configUnitMeasurement = new MapperConfiguration(cfg => cfg.CreateMap<Entities.UnitMeasurement, DTO.UnitMeasurement>());
+                        var mapperUnitMeasurement = new Mapper(configUnitMeasurement);
+                        var unitMeasurementDTO = mapperUnitMeasurement.Map<List<DTO.UnitMeasurement>>(db.UnitMeasurements.ToList());
+                        DataBase.ItemsSource = unitMeasurementDTO;
                         break;
                 }
-                DataBase.ItemsSource = collection;
             }
 
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

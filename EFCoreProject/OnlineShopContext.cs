@@ -19,8 +19,7 @@ namespace EFCoreProject
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                "Server = (LocalDB)\\MSSQLLocalDB; Database = OnlineShop; Trusted_Connection = True;");
+            optionsBuilder.UseSqlite("Data Source = database.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
