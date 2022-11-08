@@ -1,33 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using EFCoreProject.Entities;
-using System.Globalization;
-using System.Net;
 using AutoMapper;
-using EFCoreProject.DTO;
-using Order = EFCoreProject.Entities.Order;
 
 namespace EFCoreProject
 {
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Variables for storing elements of the dynamic window "Row"
+        /// </summary>
         private Dictionary<int, TextBox>? createTextBox;
         private Dictionary<int, RowDefinition>? DeleteRowDefinitions;
         private Dictionary<int, Label>? DeleteLabel;
-
+        /// <summary>
+        /// Initialize "MainWindow"
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Filling the ListBox(Selected Table) with table names and hiding the dynamic "Row" window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             using (OnlineShopContext db = new OnlineShopContext())
@@ -43,25 +44,31 @@ namespace EFCoreProject
             }
             Row.Visibility = Visibility.Hidden;
         }
-
+        /// <summary>
+        /// Calling Load Table() method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadTable();
         }
-
+        /// <summary>
+        /// Hiding the dynamic window "Row", calling "AddRowInTable" method, calling "DeleteDinamicList" method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Row.Visibility = Visibility.Hidden;
             AddRowInTable(false);
-
-            for (int i = 0; i < DataBase.Columns.Count; i++)
-            {
-                Row.RowDefinitions.Remove(DeleteRowDefinitions![i]);
-                Row.Children.Remove(DeleteLabel![i]);
-                Row.Children.Remove(createTextBox![i]);
-            }
+            DeleteDinamicList();
         }
-
+        /// <summary>
+        /// Adding data to a new row of the table by clicking on the "Add" button in the "Row" dynamic window, hiding the dynamic window, calling "AddRowInTable" and "DeleteDinamicList" methods
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             if (createTextBox is not null)
@@ -272,7 +279,11 @@ namespace EFCoreProject
             }
             DeleteDinamicList();
         }
-
+        /// <summary>
+        /// Changing the data in the selected row of the table by clicking on the "Edit" button in the "Row" dynamic window, hiding the dynamic window, calling "AddRowInTable" and "DeleteDinamicList" methods
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             if (createTextBox is not null)
@@ -459,7 +470,11 @@ namespace EFCoreProject
             }
             DeleteDinamicList();
         }
-
+        /// <summary>
+        /// Calling the "AddRowInTable" and "DinamicListAddRows" methods
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddLineButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectTable.SelectedItems.Count > 0)
@@ -472,7 +487,11 @@ namespace EFCoreProject
                 MessageBox.Show("Select table");
             }
         }
-
+        /// <summary>
+        /// Calling the "AddRowInTable" and "DinamicListEditRows" methods, inserting data from the selected row of the table into the fields of the dynamic Row window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditLineButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectTable.SelectedItems.Count > 0)
@@ -556,7 +575,11 @@ namespace EFCoreProject
                 MessageBox.Show("Select table");
             }
         }
-
+        /// <summary>
+        /// Deleting a selected table row
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteLineButton_Click(object sender, RoutedEventArgs e)
         {
             if (DataBase.SelectedItem is not null)
@@ -735,7 +758,11 @@ namespace EFCoreProject
                 MessageBox.Show("Select row");
             }
         }
-
+        /// <summary>
+        /// Clearing the table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearTable_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Are you sure?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No) { }
@@ -771,12 +798,18 @@ namespace EFCoreProject
                 }
             }
         }
-
+        /// <summary>
+        /// Exiting the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
-
+        /// <summary>
+        /// Adding fields to the dynamic Row window whose number is equal to the number of columns in the table and the "Edit" button
+        /// </summary>
         private void DinamicListEditRows()
         {
             Row.Visibility = Visibility.Visible;
@@ -826,7 +859,9 @@ namespace EFCoreProject
                 DeleteLabel.Add(i, label);
             }
         }
-
+        /// <summary>
+        /// Adding fields to the dynamic Row window whose number is equal to the number of columns in the table and the "Add" button
+        /// </summary>
         private void DinamicListAddRows()
         {
             Row.Visibility = Visibility.Visible;
@@ -879,7 +914,9 @@ namespace EFCoreProject
                 DeleteLabel.Add(i, label);
             }
         }
-
+        /// <summary>
+        /// Clearing the "Row" dynamic window
+        /// </summary>
         private void DeleteDinamicList()
         {
             for (int i = 0; i < DataBase.Columns.Count; i++)
@@ -889,7 +926,10 @@ namespace EFCoreProject
                 Row.Children.Remove(createTextBox![i]);
             }
         }
-        
+        /// <summary>
+        /// Disabling and enabling certain buttons in the program
+        /// </summary>
+        /// <param name="enable"></param>
         private void AddRowInTable(bool enable)
         {
             if (enable)
@@ -911,12 +951,13 @@ namespace EFCoreProject
                 Exit.IsEnabled = true;
             }
         }
-
+        /// <summary>
+        /// Using the automapper, transferring data from database tables to DTO tables and displaying DTO tables in a DataGrid
+        /// </summary>
         private void LoadTable()
         {
             using (OnlineShopContext db = new OnlineShopContext())
             {
-                var collection = new ObservableCollection<object>();
                 switch (SelectTable.SelectedItem)
                 {
                     case "Client":
