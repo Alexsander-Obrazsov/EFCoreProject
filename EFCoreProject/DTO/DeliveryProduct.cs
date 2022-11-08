@@ -5,7 +5,8 @@ namespace EFCoreProject.DTO
 {
     public partial class DeliveryProduct
     {
-        public int DeliveryId { get; set; }
-        public int ProductId { get; set; }
+        public int? DeliveryId { get; set; }
+        public int? ProductId { get; set; }
+
     }
 }

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Net;
 using AutoMapper;
 using EFCoreProject.DTO;
+using Order = EFCoreProject.Entities.Order;
 
 namespace EFCoreProject
 {
@@ -73,12 +74,12 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO Client (FirstName, Surname, Patronymic, Address, PhoneNumber) VALUES (" +
+                                    $"INSERT INTO [Client] (FirstName, Surname, Patronymic, Address, PhoneNumber) VALUES (" +
                                     $"'{createTextBox[1].Text}', " +
                                     $"'{createTextBox[2].Text}', " +
                                     $"'{createTextBox[3].Text}', " +
                                     $"'{createTextBox[4].Text}', " +
-                                    $"{createTextBox[5].Text})");
+                                    $"'{createTextBox[5].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -97,10 +98,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO Delivery (DateDelivery, Remark, SupplierId) VALUES (" +
-                                    $"{createTextBox[1].Text}, " +
-                                    $"'{createTextBox[2].Text}', " +
-                                    $"{createTextBox[3].Text})");
+                                    $"INSERT INTO [Delivery] (DateDelivery, Remark, Supplier_Id) VALUES ('{createTextBox[1].Text}', '{createTextBox[2].Text}', '{createTextBox[3].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -115,13 +113,13 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "DeliveryProduct":
+                        case "Delivery_Product":
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO DeliveryProduct (DeliveryId, ProductId) VALUES (" +
-                                    $"{createTextBox[1].Text}, " +
-                                    $"{createTextBox[2].Text})");
+                                    $"INSERT INTO [Delivery_Product] (Delivery_Id, Product_Id) VALUES (" +
+                                    $"'{createTextBox[0].Text}', " +
+                                    $"'{createTextBox[1].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -140,12 +138,12 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO Order (DateOrder, Count, PaymentType, Remark, ClientId) VALUES (" +
-                                    $"{createTextBox[1].Text}, " +
-                                    $"{createTextBox[2].Text}, " +
+                                    $"INSERT INTO [Order] (DateOrder, Count, PaymentType, Remark, Client_Id) VALUES (" +
+                                    $"'{createTextBox[1].Text}', " +
+                                    $"'{createTextBox[2].Text}', " +
                                     $"'{createTextBox[3].Text}', " +
                                     $"'{createTextBox[4].Text}', " +
-                                    $"{createTextBox[5].Text})");
+                                    $"'{createTextBox[5].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -164,12 +162,12 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO Product (Name, Price, UnitMeasurementId, Description, ProductGroupId) VALUES (" +
+                                    $"INSERT INTO [Product] (Name, Price, UnitMeasurement_Id, Description, ProductGroup_Id) VALUES (" +
                                     $"'{createTextBox[1].Text}', " +
-                                    $"{createTextBox[2].Text}, " +
-                                    $"{createTextBox[3].Text}, " +
+                                    $"'{createTextBox[2].Text}', " +
+                                    $"'{createTextBox[3].Text}', " +
                                     $"'{createTextBox[4].Text}', " +
-                                    $"{createTextBox[5].Text})");
+                                    $"'{createTextBox[5].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -188,8 +186,8 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO ProductGroup (Name) VALUES (" +
-                                    $"'{createTextBox[1].Text}')");
+                                    $"INSERT INTO [ProductGroup] (Name) VALUES (" +
+                                    $"'{createTextBox[1].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -204,13 +202,13 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "ProductOrder":
+                        case "Product_Order":
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO ProductOrder (ProductId, OrderId) VALUES (" +
-                                    $"{createTextBox[1].Text}, " +
-                                    $"{createTextBox[2].Text})");
+                                    $"INSERT INTO [Product_Order] (Product_Id, Order_Id) VALUES (" +
+                                    $"'{createTextBox[0].Text}', " +
+                                    $"'{createTextBox[1].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -229,10 +227,10 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO Supplier (Name, Address, PhoneNumber) VALUES (" +
+                                    $"INSERT INTO [Supplier] (Name, Address, PhoneNumber) VALUES (" +
                                     $"'{createTextBox[1].Text}', " +
                                     $"'{createTextBox[2].Text}', " +
-                                    $"{createTextBox[3].Text})");
+                                    $"'{createTextBox[3].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -251,8 +249,8 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"INSERT INTO UnitMeasurement (Name) VALUES (" +
-                                    $"'{createTextBox[1].Text}')");
+                                    $"INSERT INTO [UnitMeasurement] (Name) VALUES (" +
+                                    $"'{createTextBox[1].Text}');");
                             }
                             catch (Exception ex)
                             {
@@ -287,12 +285,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE Client SET FirstName = '{createTextBox[1].Text}'," +
-                                    $" Surname = '{createTextBox[2].Text}'," +
-                                    $" Patronymic = '{createTextBox[3].Text}'," +
-                                    $" Address = '{createTextBox[4].Text}'," +
-                                    $" PhoneNumber = {createTextBox[5].Text}" +
-                                    $" WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [Client] SET FirstName = '{createTextBox[1].Text}', Surname = '{createTextBox[2].Text}', Patronymic = '{createTextBox[3].Text}', Address = '{createTextBox[4].Text}', PhoneNumber = '{createTextBox[5].Text}' WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -311,12 +304,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE Delivery SET" +
-                                    $" DateDelivery = {createTextBox[1].Text}," +
-                                    $" Remark = '{createTextBox[2].Text}'," +
-                                    $" Address = '{createTextBox[3].Text}'," +
-                                    $" SupplierId = {createTextBox[4].Text}" +
-                                    $" WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [Delivery] SET DateDelivery = '{createTextBox[1].Text}', Remark = '{createTextBox[2].Text}', Supplier_Id = '{createTextBox[3].Text}' WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -331,14 +319,11 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "DeliveryProduct":
+                        case "Delivery_Product":
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" DeliveryId = {createTextBox[1].Text}," +
-                                    $" ProductId = {createTextBox[2].Text}," +
-                                    $" WHERE DeliveryId = {((DTO.DeliveryProduct)DataBase.SelectedItem).DeliveryId}");
+                                    $"UPDATE [Delivery_Product] SET Delivery_Id = '{createTextBox[1].Text}', Product_Id = '{createTextBox[2].Text}' WHERE Delivery_Id = {((DTO.DeliveryProduct)DataBase.SelectedItem).DeliveryId};");
                             }
                             catch (Exception ex)
                             {
@@ -357,13 +342,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" DateOrder = {createTextBox[1].Text}," +
-                                    $" Count = {createTextBox[2].Text}," +
-                                    $" PaymentType = '{createTextBox[3].Text}'," +
-                                    $" Remark = '{createTextBox[4].Text}'," +
-                                    $" ClientId = {createTextBox[5].Text}," +
-                                    $" WHERE DeliveryId = {((DTO.Order)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [Order] SET DateOrder = '{createTextBox[1].Text}', Count = '{createTextBox[2].Text}', PaymentType = '{createTextBox[3].Text}', Remark = '{createTextBox[4].Text}', Client_Id = '{createTextBox[5].Text}' WHERE Id = {((DTO.Order)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -382,13 +361,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" Name = '{createTextBox[1].Text}'," +
-                                    $" Price = {createTextBox[2].Text}," +
-                                    $" UnitMeasurementId = '{createTextBox[3].Text}'," +
-                                    $" Description = '{createTextBox[4].Text}'," +
-                                    $" ProductGroupId = {createTextBox[5].Text}," +
-                                    $" WHERE DeliveryId = {((DTO.Product)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [Product] SET Name = '{createTextBox[1].Text}', Price = '{createTextBox[2].Text}', UnitMeasurement_Id = '{createTextBox[3].Text}', Description = '{createTextBox[4].Text}', ProductGroup_Id = '{createTextBox[5].Text}' WHERE Id = {((DTO.Product)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -407,9 +380,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" Name = '{createTextBox[1].Text}'," +
-                                    $" WHERE DeliveryId = {((DTO.ProductGroup)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [ProductGroup] SET Name = '{createTextBox[1].Text}' WHERE Id = {((DTO.ProductGroup)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -424,14 +395,11 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "ProductOrder":
+                        case "Product_Order":
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" Name = '{createTextBox[1].Text}'," +
-                                    $" OrderId = {createTextBox[2].Text}," +
-                                    $" WHERE DeliveryId = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId}");
+                                    $"UPDATE [Product_Order] SET Name = '{createTextBox[1].Text}', Order_Id = '{createTextBox[2].Text}' WHERE Product_Id = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId};");
                             }
                             catch (Exception ex)
                             {
@@ -450,11 +418,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" Name = '{createTextBox[1].Text}'," +
-                                    $" Address = '{createTextBox[2].Text}'," +
-                                    $" PhoneNumber = {createTextBox[3].Text}," +
-                                    $" WHERE DeliveryId = {((DTO.Supplier)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [Supplier] SET Name = '{createTextBox[1].Text}', Address = '{createTextBox[2].Text}', PhoneNumber = '{createTextBox[3].Text}' WHERE Id = {((DTO.Supplier)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -473,9 +437,7 @@ namespace EFCoreProject
                             try
                             {
                                 db.Database.ExecuteSqlRaw(
-                                    $"UPDATE DeliveryProduct SET" +
-                                    $" Name = '{createTextBox[1].Text}'," +
-                                    $" WHERE DeliveryId = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id}");
+                                    $"UPDATE [UnitMeasurement] SET Name = '{createTextBox[1].Text}' WHERE Id = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -541,7 +503,7 @@ namespace EFCoreProject
                                         createTextBox[2].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).Remark);
                                         createTextBox[3].Text = Convert.ToString(((DTO.Delivery)DataBase.SelectedItem).SupplierId);
                                         break;
-                                    case "DeliveryProduct":
+                                    case "Delivery_Product":
                                         createTextBox[0].Text = Convert.ToString(((DTO.DeliveryProduct)DataBase.SelectedItem).DeliveryId);
                                         createTextBox[1].Text = Convert.ToString(((DTO.DeliveryProduct)DataBase.SelectedItem).ProductId);
                                         break;
@@ -565,7 +527,7 @@ namespace EFCoreProject
                                         createTextBox[0].Text = Convert.ToString(((DTO.ProductGroup)DataBase.SelectedItem).Id);
                                         createTextBox[1].Text = Convert.ToString(((DTO.ProductGroup)DataBase.SelectedItem).Name);
                                         break;
-                                    case "ProductOrder":
+                                    case "Product_Order":
                                         createTextBox[0].Text = Convert.ToString(((DTO.ProductOrder)DataBase.SelectedItem).ProductId);
                                         createTextBox[1].Text = Convert.ToString(((DTO.ProductOrder)DataBase.SelectedItem).OrderId);
                                         break;
@@ -606,7 +568,7 @@ namespace EFCoreProject
                         case "Client":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM Client WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Client] WHERE ID = {((DTO.Client)DataBase.SelectedItem).Id};");
                             }
                             catch(Exception ex)
                             {
@@ -624,7 +586,7 @@ namespace EFCoreProject
                         case "Delivery":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM Delivery WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Delivery] WHERE ID = {((DTO.Delivery)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -639,10 +601,10 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "DeliveryProduct":
+                        case "Delivery_Product":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM DeliveryProduct WHERE ProductId = {((DTO.DeliveryProduct)DataBase.SelectedItem).ProductId}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Delivery_Product] WHERE ProductId = {((DTO.DeliveryProduct)DataBase.SelectedItem).ProductId};");
                             }
                             catch (Exception ex)
                             {
@@ -660,7 +622,7 @@ namespace EFCoreProject
                         case "Order":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM Order WHERE ID = {((DTO.Order)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Order] WHERE ID = {((DTO.Order)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -678,7 +640,7 @@ namespace EFCoreProject
                         case "Product":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM Product WHERE ID = {((DTO.Product)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Product] WHERE ID = {((DTO.Product)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -696,7 +658,7 @@ namespace EFCoreProject
                         case "ProductGroup":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM ProductGroup WHERE ID = {((DTO.ProductGroup)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [ProductGroup] WHERE ID = {((DTO.ProductGroup)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -711,10 +673,10 @@ namespace EFCoreProject
                             }
                             LoadTable();
                             break;
-                        case "ProductOrder":
+                        case "Product_Order":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM ProductOrder WHERE ProductId = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Product_Order] WHERE ProductId = {((DTO.ProductOrder)DataBase.SelectedItem).ProductId};");
                             }
                             catch (Exception ex)
                             {
@@ -732,7 +694,7 @@ namespace EFCoreProject
                         case "Supplier":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM Supplier WHERE ID = {((DTO.Supplier)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [Supplier] WHERE ID = {((DTO.Supplier)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -750,7 +712,7 @@ namespace EFCoreProject
                         case "UnitMeasurement":
                             try
                             {
-                                db.Database.ExecuteSqlRaw($"DELETE FROM UnitMeasurement WHERE ID = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id}");
+                                db.Database.ExecuteSqlRaw($"DELETE FROM [UnitMeasurement] WHERE ID = {((DTO.UnitMeasurement)DataBase.SelectedItem).Id};");
                             }
                             catch (Exception ex)
                             {
@@ -785,8 +747,8 @@ namespace EFCoreProject
                     {
                         try
                         {
-                            int clearTable = db.Database.ExecuteSqlRaw($"DELETE FROM {SelectTable.SelectedItem}");
-                            int resetId = db.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('{SelectTable.SelectedItem}', RESEED, 0)");
+                            db.Database.ExecuteSqlRaw($"DELETE FROM '{SelectTable.SelectedItem}';"); 
+                            db.Database.ExecuteSqlRaw($"DELETE FROM sqlite_sequence WHERE name = '{SelectTable.SelectedItem}';");
 
                         }
                         catch (Exception ex)
@@ -808,6 +770,11 @@ namespace EFCoreProject
                     MessageBox.Show("Select table");
                 }
             }
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void DinamicListEditRows()
@@ -888,7 +855,10 @@ namespace EFCoreProject
                 Row.RowDefinitions.Add(row);
 
                 TextBox textBox = new TextBox();
-                if (i == 0) { textBox.IsEnabled = false; }
+                if (i == 0)
+                { textBox.IsEnabled = false; }
+                if (SelectTable.SelectedItem.ToString() == "Delivery_Product" || SelectTable.SelectedItem.ToString() == "Product_Order")
+                {textBox.IsEnabled = true;}
                 Row.Children.Add(textBox);
                 textBox.Name = $"{DataBase.Columns[i].Header}" + "TextBox";
                 textBox.Width = 450;
@@ -1006,11 +976,6 @@ namespace EFCoreProject
                 }
             }
 
-        }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }

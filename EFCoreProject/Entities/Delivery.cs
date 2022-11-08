@@ -8,7 +8,7 @@ namespace EFCoreProject.Entities
         public int Id { get; set; }
         public DateTime DateDelivery { get; set; }
         public string? Remark { get; set; }
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
 
         public virtual Supplier Supplier { get; set; } = null!;
     }

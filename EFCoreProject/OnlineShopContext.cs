@@ -26,6 +26,7 @@ namespace EFCoreProject
         {
             modelBuilder.Entity<Client>(entity =>
             {
+
                 entity.ToTable("Client");
 
                 entity.Property(e => e.FirstName)
@@ -47,6 +48,11 @@ namespace EFCoreProject
                 entity.Property(e => e.PhoneNumber)
                     .HasColumnType("numeric(18, 0)");
 
+                entity.HasMany(p => p.Orders)
+                    .WithOne(d => d.Client)
+                    .HasForeignKey(d => d.ClientId)
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasConstraintName("FK_Order_Client");
 
             });
 
@@ -65,7 +71,7 @@ namespace EFCoreProject
                 entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.Deliveries)
                     .HasForeignKey(d => d.SupplierId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Delivery_Supplier");
             });
 
@@ -82,13 +88,13 @@ namespace EFCoreProject
                 entity.HasOne(d => d.Delivery)
                     .WithMany()
                     .HasForeignKey(d => d.DeliveryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Delivery_Product_Delivery");
 
                 entity.HasOne(d => d.Product)
                     .WithMany()
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Delivery_Product_Product");
             });
 
@@ -111,7 +117,7 @@ namespace EFCoreProject
                 entity.HasOne(d => d.Client)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.ClientId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Order_Client");
             });
 
@@ -135,13 +141,13 @@ namespace EFCoreProject
                 entity.HasOne(d => d.ProductGroup)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.ProductGroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Product_ProductGroup");
 
                 entity.HasOne(d => d.UnitMeasurement)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.UnitMeasurementId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Product_UnitMeasurement");
             });
 
@@ -167,13 +173,13 @@ namespace EFCoreProject
                 entity.HasOne(d => d.Order)
                     .WithMany()
                     .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Product_Order_Order");
 
                 entity.HasOne(d => d.Product)
                     .WithMany()
                     .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK_Product_Order_Product");
             });
 
